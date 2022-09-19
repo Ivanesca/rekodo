@@ -13,8 +13,26 @@
                         <textarea class="form-control h-5" id="message-text" name="message"></textarea>
                         <input value="{$album_id}" name="album" class="d-none">
                     </div>
+                    <div class="mb-3">
+                        <button class="btn btn-dark w-100" type="button" id="suggest"
+                                data-bs-auto-close="outside" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            В обмен
+                        </button>
+                        <ul class="dropdown-menu w-100" aria-labelledby="suggest">
+                            {foreach from=$suggests item=suggest}
+                                <li class="ms-2">
+                                    <input class="form-check-input" name="suggest[]" type="checkbox"
+                                           value="{$suggest.id}" id="suggest{$suggest.id}">
+                                    <label class="form-check-label"
+                                           for="suggest{$suggest.id}">
+                                        {$suggest.name}
+                                    </label>
+                                </li>
+                            {/foreach}
+                        </ul>
+                    </div>
                 </div>
-                <input hidden name="movie_id" value="1">
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-dark">Отправить</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>

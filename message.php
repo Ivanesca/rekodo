@@ -41,12 +41,20 @@ $albums = $stmt->fetchAll();
 
 $id_str = implode("','", array_column($albums, 'id'));
 
-$stmt = $pdo->prepare("Select m.id, message, date_format(message_date, '%M %d %Y %H:%i'), album_id, cover, a.name, sender_id, u.name sender, password, email
+$stmt = $pdo->prepare("Select m.id, message, date_format(message_date, '%M %d %Y %H:%i') as 'message_date', album_id, cover, a.name, sender_id, u.name sender, password, email
 from messages m join users u on u.id = m.sender_id join albums a on a.id = m.album_id
 where album_id in ('" . $id_str . "')");
 
 $stmt->execute();
 $message = $stmt->fetchAll();
+
+foreach ($message as $key => $mess) {
+    $stmt = $pdo->prepare("SELECT albums.name, albums.cover, albums.description, state from albums join states on albums.state_id = states.id join suggestions s on albums.id = s.album_id where s.message_id = :mess_id");
+    $stmt->bindValue('mess_id', $mess['id']);
+    $stmt->execute();
+
+    $message[$key]['suggests'] = $stmt->fetchAll();
+}
 
 $stmt = $pdo->prepare("select * from authors");
 $stmt->execute();

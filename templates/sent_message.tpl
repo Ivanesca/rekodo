@@ -163,9 +163,33 @@
                                 <div class="card-body my-4">
                                     <input class="btn-check" type="checkbox" name="message[]" value="{$message.id}"
                                            id="flexCheck{$message.id}">
-                                    <label class="btn btn-lg btn-outline-warning" for="flexCheck{$message.id}">
+                                    <label class="btn btn-lg btn-outline-warning" style="width: 120px" for="flexCheck{$message.id}">
                                         Выбрать
                                     </label>
+                                    <button type="button" class=" mt-2 btn btn-dark btn-lg" style="width: 120px" data-bs-toggle="modal" data-bs-target="#exampleModal{$message.id}">
+                                        В обмен
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal{$message.id}" tabindex="-1" aria-labelledby="exampleModalLabel{$message.id}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel{$message.id}">Предложение</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {foreach from=$message.suggests item=suggest}
+                                                        <p class="text-center">{$suggest.name}</p>
+                                                        <hr>
+                                                    {/foreach}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

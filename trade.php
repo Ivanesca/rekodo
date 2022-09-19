@@ -4,16 +4,19 @@ session_start();
 require_once('Smarty.class.php');
 
 $smarty = new Smarty;
+$user_id = -1;
 
 if (isset($_SESSION['user_id'])) {
     $smarty->assign('user_id', $_SESSION['user_id']);
     $smarty->assign('user_role', $_SESSION['user_role']);
     $smarty->assign('username', $_SESSION['username']);
+    $user_id = $_SESSION['user_id'];
 } else {
     if (isset($_COOKIE['user_id'])) {
         $smarty->assign('user_id', $_COOKIE['user_id']);
         $smarty->assign('user_role', $_COOKIE['user_role']);
         $smarty->assign('username', $_COOKIE['username']);
+        $user_id = $_COOKIE['user_id'];
     } else {
         header('Location: login.php');
     }
@@ -26,7 +29,6 @@ $stmt = $pdo->prepare("SELECT albums.id, albums.name, albums.year, albums.sale, 
 $stmt->bindValue('sale', true);
 $stmt->execute();
 $res = $stmt->fetchAll();
-
 
 foreach ($res as $key => $album) {
     $stmt = $pdo->prepare("SELECT genres.genre from genres join albums_genres ag on genres.id = ag.genre_id where album_id = :id");
@@ -50,8 +52,14 @@ foreach ($res as $key => $album) {
     $res[$key]['authors'] = $author_str;
 }
 
+$stmt = $pdo->prepare("select * from albums where owner_id = :ow_id");
+$stmt->bindValue("ow_id", $user_id);
+$stmt->execute();
+$suggestions = $stmt->fetchAll();
+
 $pdo = null;
 
+$smarty->assign("suggests", $suggestions);
 $smarty->assign('albums', $res);
 
 $smarty->display("templates/trade.tpl");

@@ -165,9 +165,45 @@
                                 <div class="card-body my-4">
                                     <input class="btn-check" type="checkbox" name="message[]" value="{$message.id}"
                                            id="flexCheck{$message.id}">
-                                    <label class="btn btn-lg btn-outline-warning" for="flexCheck{$message.id}">
+                                    <label class="btn btn-lg btn-outline-warning" style="width: 120px" for="flexCheck{$message.id}">
                                         Выбрать
                                     </label>
+                                    <button type="button" class=" mt-2 btn btn-dark btn-lg" style="width: 120px" data-bs-toggle="modal" data-bs-target="#exampleModal{$message.id}">
+                                        В обмен
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal{$message.id}" tabindex="-1" aria-labelledby="exampleModalLabel{$message.id}" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel{$message.id}">Предложение</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {foreach from=$message.suggests item=suggest}
+                                                        <div class="card mb-3"">
+                                                            <div class="row g-0">
+                                                                <div class="col-md-2 m-3">
+                                                                    <img src="{$suggest.cover}" class="img-fluid rounded-start" width="100">
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="card-body">
+                                                                        <h5 class="card-title">{$suggest.name}</h5>
+                                                                        <p class="card-text">{$suggest.description}</p>
+                                                                        <p class="card-text"><small class="text-muted">Состояние: {$suggest.state}</small></p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {/foreach}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

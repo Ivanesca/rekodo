@@ -15,6 +15,7 @@ if (isset($_SESSION['user_id'])) {
 
 $album_id = $_REQUEST['album'];
 $message = $_REQUEST['message'];
+$suggests = $_REQUEST['suggest'];
 $date = date('Y-m-d');
 
 $pdo = new PDO("mysql:host=localhost;dbname=rekodo_bd", 'root', 'vertrigo');
@@ -25,6 +26,15 @@ $stmt->bindValue("alb", $album_id);
 $stmt->bindValue("sen", $user_id);
 $stmt->bindValue("message_date", $date);
 $stmt->execute();
+
+$mess = $pdo->lastInsertId();
+
+foreach ($suggests as $key => $suggest) {
+    $stmt = $pdo->prepare("insert into suggestions (message_id, album_id) values (:mess, :sugg)");
+    $stmt->bindValue("mess", $mess);
+    $stmt->bindValue("sugg", $suggest);
+    $stmt->execute();
+}
 
 $stmt = $pdo->prepare("select get_email(:album_id)");
 $stmt->bindValue("album_id", $album_id);

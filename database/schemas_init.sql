@@ -106,3 +106,11 @@ add column message_date date;
 
 alter table messages
 drop column message_date;
+
+create table suggestions (
+    message_id int,
+    album_id int,
+    primary key(message_id, album_id),
+    foreign key (message_id) references messages(id),
+    foreign key (album_id) references albums(id)
+);

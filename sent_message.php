@@ -33,6 +33,14 @@ $stmt->execute();
 
 $message = $stmt->fetchAll();
 
+foreach ($message as $key => $mess) {
+    $stmt = $pdo->prepare("SELECT albums.name from albums join suggestions s on albums.id = s.album_id where s.message_id = :mess_id");
+    $stmt->bindValue('mess_id', $mess['id']);
+    $stmt->execute();
+
+    $message[$key]['suggests'] = $stmt->fetchAll();
+}
+
 $stmt = $pdo->prepare("select * from authors");
 $stmt->execute();
 $authors = $stmt->fetchAll();

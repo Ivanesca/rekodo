@@ -140,7 +140,8 @@
                                 </div>
                             </div>
                             {include file="templates/message_create.tpl"
-                            album_id=$album.id}
+                            album_id=$album.id
+                            suggests=$suggests}
                             {include file="templates/album_about.tpl"
                             id=$album.id
                             name=$album.name
